@@ -24,18 +24,25 @@ $('#slider1, #slider2, #slider3, #slider4, #slider5, #slider6').owlCarousel({
 $('.plus-cart').click(function(){
     var id = $(this).attr("pid").toString();
     var eml = this.parentNode.children[2]
-    $.ajax({
-        type: "GET",
-        url:"/pluscart",
-        data: {
-            prod_id:id
-        },
-        success:function (data){
-            eml.innerText = data.quantity
-            document.getElementById("amount").innerText = data.amount
-            document.getElementById("total_amount").innerText = data.total_amount
-        }
-    })
+    var qty = parseInt(eml.innerText)
+    if (qty < 10){
+        $.ajax({
+            type: "GET",
+            url:"/pluscart",
+            data: {
+                prod_id:id
+            },
+            success:function (data){
+                eml.innerText = data.quantity
+                document.getElementById("amount").innerText = data.amount
+                document.getElementById("total_amount").innerText = data.total_amount
+            }
+        })
+    }
+    else {
+        // popping message
+        alert("We apologize, but the quantity you requested for the product is unavailable at this time.");
+    }
 })
 $('.minus-cart').click(function(){
     var id = $(this).attr("pid").toString();
